@@ -14,15 +14,20 @@ import java.awt.Rectangle;
 import javax.swing.JTextPane;
 import javax.swing.JFormattedTextField;
 import javax.swing.border.BevelBorder;
+
+import controllers.Data;
+
 import java.awt.Dimension;
 import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainUI {
 
 	private JFrame frame;
 	private JTextField txtServer;
 	private JTextField txtPort;
-	private JButton btnNewButton;
+	private JButton btnLogin;
 	private JButton btnLogout;
 	private JButton btnQuery;
 	private JButton btnExecute;
@@ -99,7 +104,7 @@ public class MainUI {
 		jspInfo.setViewportView(infoTxt);
 		
 		jspNotification = new JScrollPane();
-		jspNotification.setBounds(63, 334, 349, 90);
+		jspNotification.setBounds(63, 334, 342, 90);
 		panel.add(jspNotification);
 		
 		notifTxt = new JTextPane();
@@ -107,20 +112,62 @@ public class MainUI {
 		notifTxt.setText("Notification area");
 		jspNotification.setViewportView(notifTxt);
 		
-		btnNewButton = new JButton("Login");
-		btnNewButton.setBounds(289, 9, 65, 24);
-		panel.add(btnNewButton);
+		btnLogin = new JButton("Login");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				login();
+			}
+		});
+		btnLogin.setBounds(289, 9, 65, 24);
+		panel.add(btnLogin);
 		
 		btnLogout = new JButton("Logout");
 		btnLogout.setBounds(366, 9, 80, 24);
 		panel.add(btnLogout);
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				logout();
+			}
+		});
 		
 		btnQuery = new JButton("Query");
 		btnQuery.setBounds(366, 49, 80, 24);
 		panel.add(btnQuery);
+		btnQuery.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doSelectQuery();
+			}
+		});
 		
 		btnExecute = new JButton("Execute");
 		btnExecute.setBounds(366, 86, 80, 24);
 		panel.add(btnExecute);
 	}
+	
+	private void login() {
+		String server = txtServer.getText(); 
+		String port = txtPort.getText();
+		boolean logged = Data.getInstance().login(server, port);
+		if (logged) {
+			notifTxt.setText("Success: connection stablished.");
+		} else {
+			notifTxt.setText("Error on login.");
+		}
+	}
+	
+	private void logout() {
+		boolean loggedOut = Data.getInstance().logout();
+		if (loggedOut) {
+			notifTxt.setText("Success: connection finished.");
+		} else {
+			notifTxt.setText("Error on logout.");
+		}
+	}
+
+	private void doSelectQuery() {
+		String query = sqlTxt.getText();
+		String result = Data.getInstance().selectQuery(query);
+		infoTxt.setText(result);
+	}
+	
 }
