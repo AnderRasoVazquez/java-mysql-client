@@ -5,19 +5,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
 import javax.swing.JTextField;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.JButton;
-import java.awt.Rectangle;
 import javax.swing.JTextPane;
-import javax.swing.JFormattedTextField;
-import javax.swing.border.BevelBorder;
-
 import controllers.Data;
 
-import java.awt.Dimension;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -32,7 +24,6 @@ public class MainUI {
 	private JButton btnQuery;
 	private JButton btnExecute;
 	private JTextPane sqlTxt;
-	private JScrollPane jsp;
 	private JScrollPane jspInfo;
 	private JTextPane infoTxt;
 	private JScrollPane jspNotification;
@@ -142,6 +133,11 @@ public class MainUI {
 		btnExecute = new JButton("Execute");
 		btnExecute.setBounds(366, 86, 80, 24);
 		panel.add(btnExecute);
+		btnExecute.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				doExecuteQuery();
+			}
+		});
 	}
 	
 	private void login() {
@@ -170,4 +166,8 @@ public class MainUI {
 		infoTxt.setText(result);
 	}
 	
+	private void doExecuteQuery() {
+		String query = sqlTxt.getText();
+		Data.getInstance().executeQuery(query);
+	}
 }

@@ -31,7 +31,8 @@ public class Data {
 			conn = DriverManager.getConnection(
 					"jdbc:mysql://" + server + ":" + port,
 					// TODO preguntarle que usuario tenemos que usar
-					"admAirdBD", "1234");
+					"admDBer", "1234");
+//					"admAirdBD", "1234");
 			conn.setAutoCommit(true);
 			return true;
 		} catch (SQLException e) {
@@ -65,7 +66,6 @@ public class Data {
 		//open connection
 		try {
 			st = conn.createStatement();
-			System.out.println("trololol");
 			resultSet = st.executeQuery(query);
 			ResultSetMetaData rsmd = resultSet.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
@@ -86,6 +86,28 @@ public class Data {
 		}
 	}
 	
+	public void executeQuery(String query) {
+		
+		try {
+			Class.forName("org.gjt.mm.mysql.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		// Si no se ha hecho login
+		if (conn == null) {
+			System.out.println("No connection stablished.");
+		}
+
+		//open connection
+		try {
+			st = conn.createStatement();
+			st.executeUpdate(query);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
     public boolean logout() {
         try {
             if (conn != null) {
@@ -103,15 +125,20 @@ public class Data {
 	 */
 	public static void main(String[] args) {
 		// pruebas
-		Data.getInstance().login("192.168.1.128", "8306");
+		Data.getInstance().login("192.168.0.156", "8306");
 //		Data.getInstance().close();
-		System.out.println(Data.getInstance().selectQuery("SELECT aId, aName, aPrice FROM AirdBD.Apartment"));
-		System.out.println(Data.getInstance().selectQuery("SELECT aId, aName, aPrice FROM AirdBD.Apartment"));
-		System.out.println("MySQL is funny!!!");
+//		System.out.println(Data.getInstance().selectQuery("SELECT aId, aName, aPrice FROM AirdBD.Apartment"));
+		System.out.println(Data.getInstance().selectQuery("SELECT * FROM DBer.Driver"));
+		Data.getInstance().executeQuery("INSERT INTO DBer.Driver (dId, dName) VALUES (5, 'Caca')");
+//		Data.getInstance().executeQuery("DELETE FROM DBer.Driver WHERE dID = 1");
+		Data.getInstance().executeQuery("UPDATE DBer.Driver SET dName = 'Cacota' WHERE dId = 5");
+		System.out.println(Data.getInstance().selectQuery("SELECT * FROM DBer.Driver"));
+		
+		System.out.println("MySQL is not funny holy hell!!!");
 
 		Data.getInstance().logout();;
-		Data.getInstance().login("192.168.1.128", "8306");
-		System.out.println(Data.getInstance().selectQuery("SELECT aId, aName, aPrice FROM AirdBD.Apartment"));
+		Data.getInstance().login("192.168.0.156", "8306");
+//		System.out.println(Data.getInstance().selectQuery("SELECT aId, aName, aPrice FROM AirdBD.Apartment"));
 	}
 
 }
