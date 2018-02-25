@@ -73,6 +73,7 @@ public class MainUI {
 		txtServer.setColumns(10);
 		
 		txtPort = new JTextField();
+		txtPort.setToolTipText("Port");
 		txtPort.setBounds(204, 12, 73, 18);
 		txtPort.setText("Port");
 		panel.add(txtPort);
@@ -162,12 +163,25 @@ public class MainUI {
 
 	private void doSelectQuery() {
 		String query = sqlTxt.getText();
-		String result = Data.getInstance().selectQuery(query);
-		infoTxt.setText(result);
+		String[] result = Data.getInstance().selectQuery(query);
+		if (result[0].equals("0")) {
+			infoTxt.setText(result[1]);
+			notifTxt.setText("Select OK.");
+		}else if (result[1].equals("1")) {
+			infoTxt.setText("ERROR");
+			notifTxt.setText(result[1]);
+		}
 	}
 	
 	private void doExecuteQuery() {
 		String query = sqlTxt.getText();
-		Data.getInstance().executeQuery(query);
+		String[] result = Data.getInstance().executeQuery(query);
+		if (result[0].equals("0")) {
+			infoTxt.setText("Affected rows: " + result[1]);
+			notifTxt.setText("Execute OK.");
+		}else if (result[1].equals("1")) {
+			infoTxt.setText("ERROR");
+			notifTxt.setText(result[1]);
+		}
 	}
 }

@@ -43,6 +43,18 @@ public class Data {
 		
 	}
 	
+    public boolean logout() {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+            return true;
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return false;
+        }
+    }
+    
 	public static Data getInstance() {
 		if (Data.instance == null) {
 			Data.instance = new Data();
@@ -50,7 +62,7 @@ public class Data {
 		return Data.instance;
 	}
 	
-	public String selectQuery(String query) {
+	public String[] selectQuery(String query) {
 		
 		try {
 			Class.forName("org.gjt.mm.mysql.Driver");
@@ -60,7 +72,7 @@ public class Data {
 		
 		// Si no se ha hecho login
 		if (conn == null) {
-			return "No connection stablished.";
+			return new String[] {"1", "No connection stablished."};
 		}
 
 		//open connection
@@ -80,13 +92,13 @@ public class Data {
 			}
             resultSet.close();
             st.close();
-			return selectResult.toString();
+			return new String[]{"0", selectResult.toString()};
 		} catch (SQLException e) {
-			return e.getMessage();
+			return new String[] {"1", e.getMessage()};
 		}
 	}
 	
-	public void executeQuery(String query) {
+	public String[] executeQuery(String query) {
 		
 		try {
 			Class.forName("org.gjt.mm.mysql.Driver");
@@ -102,42 +114,32 @@ public class Data {
 		//open connection
 		try {
 			st = conn.createStatement();
-			st.executeUpdate(query);
+			int rows = st.executeUpdate(query);
+			return new String[]{"0", "" + rows};
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			return new String[] {"1", e.getMessage()};
 		}
 	}
-	
-    public boolean logout() {
-        try {
-            if (conn != null) {
-                conn.close();
-            }
-            return true;
-        } catch (Exception e) {
-        	e.printStackTrace();
-        	return false;
-        }
-    }
+
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// pruebas
+		// Pruebas
 		Data.getInstance().login("192.168.0.156", "8306");
 //		Data.getInstance().close();
 //		System.out.println(Data.getInstance().selectQuery("SELECT aId, aName, aPrice FROM AirdBD.Apartment"));
-		System.out.println(Data.getInstance().selectQuery("SELECT * FROM DBer.Driver"));
+		System.out.println(Data.getInstance().selectQuery("SELECT * FROM DBer.Driver")[1]);
 		Data.getInstance().executeQuery("INSERT INTO DBer.Driver (dId, dName) VALUES (5, 'Caca')");
 //		Data.getInstance().executeQuery("DELETE FROM DBer.Driver WHERE dID = 1");
-		Data.getInstance().executeQuery("UPDATE DBer.Driver SET dName = 'Cacota' WHERE dId = 5");
-		System.out.println(Data.getInstance().selectQuery("SELECT * FROM DBer.Driver"));
+		Data.getInstance().executeQuery("UPDATE DBer.Driver SET dName = 'Patata' WHERE dId = 5");
+		System.out.println(Data.getInstance().selectQuery("SELECT * FROM DBer.Driver")[1]);
 		
 		System.out.println("MySQL is not funny holy hell!!!");
 
 		Data.getInstance().logout();;
-		Data.getInstance().login("192.168.0.156", "8306");
+		Data.getInstance().login("	", "8306");
 //		System.out.println(Data.getInstance().selectQuery("SELECT aId, aName, aPrice FROM AirdBD.Apartment"));
 	}
 
