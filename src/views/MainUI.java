@@ -142,9 +142,13 @@ public class MainUI {
 	}
 	
 	private void login() {
-//		String server = txtServer.getText(); 
-//		String port = txtPort.getText();
-//		boolean logged = Data.getInstance().login(server, port);
+		String server = txtServer.getText(); 
+		String port = txtPort.getText();
+		LoginUI loginWindow = new LoginUI(server, port);
+		while (loginWindow.isActive()) {
+			frame.setEnabled(false);
+		}
+		frame.setEnabled(true);
 //		if (logged) {
 //			notifTxt.setText("Success: connection stablished.");
 //		} else {
