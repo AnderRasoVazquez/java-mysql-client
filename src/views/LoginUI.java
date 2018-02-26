@@ -19,15 +19,7 @@ import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-<<<<<<< HEAD
 @SuppressWarnings("serial")
-=======
-/**
- * Login window, used to connect to the database.
- * @author ander
- *
- */
->>>>>>> fa7f81e8273d11a10eca540f57242003b7e1c22d
 public class LoginUI extends JDialog {
 
 	private String server;

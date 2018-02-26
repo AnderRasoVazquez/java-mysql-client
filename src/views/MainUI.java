@@ -72,12 +72,8 @@ public class MainUI {
 		double width = screensize.getWidth();
 		double height = screensize.getHeight();
 		frame = new JFrame();
-<<<<<<< HEAD
 		frame.setResizable(false);
 		frame.setBounds((int)(width-460)/2, (int)(height-500)/2, 460, 500);
-=======
-		frame.setBounds(100, 100, 460, 500);
->>>>>>> fa7f81e8273d11a10eca540f57242003b7e1c22d
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
@@ -209,20 +205,7 @@ public class MainUI {
 	private void login() {
 		String server = txtServer.getText(); 
 		String port = txtPort.getText();
-<<<<<<< HEAD
 		new LoginUI(server, port);
-//		if (logged) {
-//			notifTxt.setText("Success: connection stablished.");
-//		} else {
-//			notifTxt.setText("Error on login.");
-//		}
-=======
-		LoginUI loginWindow = new LoginUI(server, port);
-		while (loginWindow.isActive()) {
-			frame.setEnabled(false);
-		}
-		frame.setEnabled(true);
->>>>>>> fa7f81e8273d11a10eca540f57242003b7e1c22d
 	}
 	
 	/**
