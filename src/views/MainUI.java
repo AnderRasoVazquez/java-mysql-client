@@ -142,14 +142,14 @@ public class MainUI {
 	}
 	
 	private void login() {
-		String server = txtServer.getText(); 
-		String port = txtPort.getText();
-		boolean logged = Data.getInstance().login(server, port);
-		if (logged) {
-			notifTxt.setText("Success: connection stablished.");
-		} else {
-			notifTxt.setText("Error on login.");
-		}
+//		String server = txtServer.getText(); 
+//		String port = txtPort.getText();
+//		boolean logged = Data.getInstance().login(server, port);
+//		if (logged) {
+//			notifTxt.setText("Success: connection stablished.");
+//		} else {
+//			notifTxt.setText("Error on login.");
+//		}
 	}
 	
 	private void logout() {
