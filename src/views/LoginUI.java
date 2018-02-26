@@ -3,6 +3,7 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Toolkit;
 
 import javax.swing.JButton;
@@ -19,6 +20,9 @@ import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Login window of the application.
+ */
 @SuppressWarnings("serial")
 public class LoginUI extends JDialog {
 
@@ -71,12 +75,14 @@ public class LoginUI extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton loginButton = new JButton("Log in");
+				loginButton.setFont(new Font("Arial", Font.BOLD, 10));
 				loginButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (login()) {
 							dispose();
 						}else{
-							JOptionPane.showMessageDialog(null, "Error on login.", "Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Error on login. Check if the IP direction, the port,"
+									+ " the username and the password are written correctly", "Error", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 				});
@@ -86,6 +92,7 @@ public class LoginUI extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.setFont(new Font("Arial", Font.BOLD, 10));
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						dispose();

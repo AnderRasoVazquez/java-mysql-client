@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -22,12 +23,10 @@ import java.awt.event.FocusEvent;
 
 /**
  * Main window of the application.
- * @author ander
- *
  */
 public class MainUI {
 
-	private JFrame frame;
+	private JFrame frmSqlConnector;
 	private JTextField txtServer;
 	private JTextField txtPort;
 	private JButton btnLogin;
@@ -49,7 +48,7 @@ public class MainUI {
 			public void run() {
 				try {
 					MainUI window = new MainUI();
-					window.frame.setVisible(true);
+					window.frmSqlConnector.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -71,13 +70,15 @@ public class MainUI {
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 		double width = screensize.getWidth();
 		double height = screensize.getHeight();
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds((int)(width-460)/2, (int)(height-500)/2, 460, 500);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmSqlConnector = new JFrame();
+		frmSqlConnector.setIconImage(Toolkit.getDefaultToolkit().getImage(MainUI.class.getResource("/res/icon.png")));
+		frmSqlConnector.setTitle("SQL Connector");
+		frmSqlConnector.setResizable(false);
+		frmSqlConnector.setBounds((int)(width-460)/2, (int)(height-500)/2, 460, 500);
+		frmSqlConnector.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
+		frmSqlConnector.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
 		txtServer = new JTextField();
@@ -156,22 +157,23 @@ public class MainUI {
 		jspNotification = new JScrollPane();
 		jspNotification.setBounds(63, 334, 342, 90);
 		panel.add(jspNotification);
-		
 		notifTxt = new JTextPane();
 		notifTxt.setEditable(false);
 		notifTxt.setText("Notification area");
 		jspNotification.setViewportView(notifTxt);
 		
 		btnLogin = new JButton("Login");
+		btnLogin.setFont(new Font("Arial", Font.BOLD, 10));
+		btnLogin.setBounds(289, 9, 65, 24);
+		panel.add(btnLogin);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				login();
 			}
 		});
-		btnLogin.setBounds(289, 9, 65, 24);
-		panel.add(btnLogin);
 		
 		btnLogout = new JButton("Logout");
+		btnLogout.setFont(new Font("Arial", Font.BOLD, 10));
 		btnLogout.setBounds(366, 9, 80, 24);
 		panel.add(btnLogout);
 		btnLogout.addActionListener(new ActionListener() {
@@ -181,6 +183,7 @@ public class MainUI {
 		});
 		
 		btnQuery = new JButton("Query");
+		btnQuery.setFont(new Font("Arial", Font.BOLD, 10));
 		btnQuery.setBounds(366, 49, 80, 24);
 		panel.add(btnQuery);
 		btnQuery.addActionListener(new ActionListener() {
@@ -190,6 +193,7 @@ public class MainUI {
 		});
 		
 		btnExecute = new JButton("Execute");
+		btnExecute.setFont(new Font("Arial", Font.BOLD, 10));
 		btnExecute.setBounds(366, 86, 80, 24);
 		panel.add(btnExecute);
 		btnExecute.addActionListener(new ActionListener() {
@@ -214,6 +218,7 @@ public class MainUI {
 	private void logout() {
 		boolean loggedOut = Data.getInstance().logout();
 		if (loggedOut) {
+			infoTxt.setText("");
 			notifTxt.setText("Success: connection finished.");
 		} else {
 			notifTxt.setText("Error on logout.");
@@ -231,7 +236,11 @@ public class MainUI {
 			notifTxt.setText("Select OK.");
 		}else if (result[0].equals("1")) {
 			infoTxt.setText("ERROR");
-			notifTxt.setText(result[1]);
+			if (result[1].equals("Can not issue data manipulation statements with executeQuery().")) {
+				notifTxt.setText("You are trying to execute a data manipulation statement using the QUERY method. Try to use EXECUTE instead.");
+			}else {
+				notifTxt.setText(result[1]);
+			}		
 		}
 	}
 	
@@ -246,7 +255,12 @@ public class MainUI {
 			notifTxt.setText("Execute OK.");
 		}else if (result[0].equals("1")) {
 			infoTxt.setText("ERROR");
-			notifTxt.setText(result[1]);
+			if (result[1].equals("Can not issue SELECT via executeUpdate() or executeLargeUpdate().")) {
+				notifTxt.setText("You are trying to execute a SELECT statement using the EXECUTE method. Try to use QUERY instead.");
+			}else {
+				notifTxt.setText(result[1]);
+			}
+			
 		}
 	}
 }

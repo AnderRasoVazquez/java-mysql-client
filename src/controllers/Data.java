@@ -9,8 +9,6 @@ import java.sql.Statement;
 
 /**
  * MySQL connection manager.
- * @author ander
- *
  */
 public class Data {
 	
@@ -23,7 +21,7 @@ public class Data {
 	private Data() { }
 	
 	/**
-	 * Create a conexion with MySQL.
+	 * Create a connection with MySQL.
 	 * @param server
 	 * @param port
 	 * @param user
@@ -46,8 +44,6 @@ public class Data {
 			conn.setAutoCommit(true);
 			return true;
 		} catch (SQLException e) {
-			//e.printStackTrace();
-			System.out.println(e.getMessage());
 			return false;
 		} 
 		
@@ -117,10 +113,8 @@ public class Data {
 			}
             resultSet.close();
             st.close();
-            System.out.println(selectResult);
 			return new String[]{"0", selectResult.toString()};
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
 			return new String[] {"1", e.getMessage()};
 		}
 	}
