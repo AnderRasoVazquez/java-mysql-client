@@ -20,6 +20,11 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 
+/**
+ * Main window of the application.
+ * @author ander
+ *
+ */
 public class MainUI {
 
 	private JFrame frame;
@@ -67,8 +72,12 @@ public class MainUI {
 		double width = screensize.getWidth();
 		double height = screensize.getHeight();
 		frame = new JFrame();
+<<<<<<< HEAD
 		frame.setResizable(false);
 		frame.setBounds((int)(width-460)/2, (int)(height-500)/2, 460, 500);
+=======
+		frame.setBounds(100, 100, 460, 500);
+>>>>>>> fa7f81e8273d11a10eca540f57242003b7e1c22d
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
@@ -194,17 +203,31 @@ public class MainUI {
 		});
 	}
 	
+	/**
+	 * Open login window.
+	 */
 	private void login() {
 		String server = txtServer.getText(); 
 		String port = txtPort.getText();
+<<<<<<< HEAD
 		new LoginUI(server, port);
 //		if (logged) {
 //			notifTxt.setText("Success: connection stablished.");
 //		} else {
 //			notifTxt.setText("Error on login.");
 //		}
+=======
+		LoginUI loginWindow = new LoginUI(server, port);
+		while (loginWindow.isActive()) {
+			frame.setEnabled(false);
+		}
+		frame.setEnabled(true);
+>>>>>>> fa7f81e8273d11a10eca540f57242003b7e1c22d
 	}
 	
+	/**
+	 * Close the connection.
+	 */
 	private void logout() {
 		boolean loggedOut = Data.getInstance().logout();
 		if (loggedOut) {
@@ -214,6 +237,9 @@ public class MainUI {
 		}
 	}
 
+	/**
+	 * Execute a select query.
+	 */
 	private void doSelectQuery() {
 		String query = sqlTxt.getText();
 		String[] result = Data.getInstance().selectQuery(query);
@@ -226,6 +252,9 @@ public class MainUI {
 		}
 	}
 	
+	/**
+	 * Execute any query that is not a select.
+	 */
 	private void doExecuteQuery() {
 		String query = sqlTxt.getText();
 		String[] result = Data.getInstance().executeQuery(query);
