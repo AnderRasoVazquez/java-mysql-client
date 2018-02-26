@@ -1,7 +1,9 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,6 +19,7 @@ import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class LoginUI extends JDialog {
 
 	private String server;
@@ -33,12 +36,14 @@ public class LoginUI extends JDialog {
 	public LoginUI(String pServer, String pPort) {
 		server = pServer;
 		port = pPort;
-		setTitle("Login");
 		initialize();
 	}
 
 	private void initialize() {
-		setBounds(100, 100, 283, 120);
+		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screensize.getWidth();
+		double height = screensize.getHeight();
+		setBounds((int)(width-283)/2, (int)(height-120)/2, 283, 120);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -65,7 +70,7 @@ public class LoginUI extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton loginButton = new JButton("Login");
+				JButton loginButton = new JButton("Log in");
 				loginButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if (login()) {
@@ -81,17 +86,28 @@ public class LoginUI extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("");
 				buttonPane.add(cancelButton);
 			}
 		}
-		
+
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		setVisible(true);
+		setResizable(false);
+		setTitle("Login");
+		
 	}
 	
 	private boolean login() {
 		String username = txtUser.getText();
+		@SuppressWarnings("deprecation")
 		String password = passwordField.getText();
 		return Data.getInstance().login(server, port, username, password);
 	}
+
 }

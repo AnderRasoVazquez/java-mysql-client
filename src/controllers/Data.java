@@ -72,7 +72,7 @@ public class Data {
 		
 		// Si no se ha hecho login
 		if (conn == null) {
-			return new String[] {"1", "No connection stablished."};
+			return new String[] {"1", "You are not logged in."};
 		}
 
 		//open connection
@@ -110,7 +110,7 @@ public class Data {
 		
 		// Si no se ha hecho login
 		if (conn == null) {
-			System.out.println("No connection stablished.");
+			return new String[] {"1", "You are not logged in."};
 		}
 
 		//open connection

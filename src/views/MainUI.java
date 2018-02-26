@@ -1,10 +1,13 @@
 package views;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
@@ -13,6 +16,9 @@ import controllers.Data;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+
 
 public class MainUI {
 
@@ -29,6 +35,7 @@ public class MainUI {
 	private JScrollPane jspNotification;
 	private JTextPane notifTxt;
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -56,9 +63,12 @@ public class MainUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screensize.getWidth();
+		double height = screensize.getHeight();
 		frame = new JFrame();
-//		frame.setBounds(100, 100, 450, 300);
-		frame.setBounds(100, 100, 460, 500);
+		frame.setResizable(false);
+		frame.setBounds((int)(width-460)/2, (int)(height-500)/2, 460, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
@@ -66,13 +76,41 @@ public class MainUI {
 		panel.setLayout(null);
 		
 		txtServer = new JTextField();
+		txtServer.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				if (txtServer.getText().equals("Server address")) {
+					txtServer.setText("");
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (txtServer.getText().equals("")) {
+					txtServer.setText("Server address");
+				}
+			}
+		});
 		txtServer.setBounds(12, 12, 180, 18);
+		txtServer.setToolTipText("Server address");
 		txtServer.setText("Server address");
-		txtServer.setToolTipText("");
 		panel.add(txtServer);
 		txtServer.setColumns(10);
 		
 		txtPort = new JTextField();
+		txtPort.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				if (txtPort.getText().equals("Port")) {
+					txtPort.setText("");
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (txtPort.getText().equals("")) {
+					txtPort.setText("Port");
+				}
+			}
+		});
 		txtPort.setToolTipText("Port");
 		txtPort.setBounds(204, 12, 73, 18);
 		txtPort.setText("Port");
@@ -83,8 +121,23 @@ public class MainUI {
 		panel.add(jspSql);
 		
 		sqlTxt = new JTextPane();
+		sqlTxt.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				if (sqlTxt.getText().equals("SQL sentence")) {
+					sqlTxt.setText("");
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (sqlTxt.getText().equals("")) {
+					sqlTxt.setText("SQL sentence");
+				}
+			}
+		});
+		sqlTxt.setToolTipText("SQL sentence");
 		jspSql.setViewportView(sqlTxt);
-		sqlTxt.setText("Sql sentence");
+		sqlTxt.setText("SQL sentence");
 		
 		jspInfo = new JScrollPane();
 		jspInfo.setBounds(62, 150, 342, 159);
@@ -144,11 +197,7 @@ public class MainUI {
 	private void login() {
 		String server = txtServer.getText(); 
 		String port = txtPort.getText();
-		LoginUI loginWindow = new LoginUI(server, port);
-		while (loginWindow.isActive()) {
-			frame.setEnabled(false);
-		}
-		frame.setEnabled(true);
+		new LoginUI(server, port);
 //		if (logged) {
 //			notifTxt.setText("Success: connection stablished.");
 //		} else {
@@ -171,7 +220,7 @@ public class MainUI {
 		if (result[0].equals("0")) {
 			infoTxt.setText(result[1]);
 			notifTxt.setText("Select OK.");
-		}else if (result[1].equals("1")) {
+		}else if (result[0].equals("1")) {
 			infoTxt.setText("ERROR");
 			notifTxt.setText(result[1]);
 		}
@@ -183,7 +232,7 @@ public class MainUI {
 		if (result[0].equals("0")) {
 			infoTxt.setText("Affected rows: " + result[1]);
 			notifTxt.setText("Execute OK.");
-		}else if (result[1].equals("1")) {
+		}else if (result[0].equals("1")) {
 			infoTxt.setText("ERROR");
 			notifTxt.setText(result[1]);
 		}
