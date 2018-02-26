@@ -117,8 +117,10 @@ public class Data {
 		try {
 			st = conn.createStatement();
 			int rows = st.executeUpdate(query);
+			System.out.println("lololo funciona");
 			return new String[]{"0", "" + rows};
 		} catch (SQLException e) {
+			System.out.println("errrrrroooooorrrrrr");
 			return new String[] {"1", e.getMessage()};
 		}
 	}
@@ -132,6 +134,7 @@ public class Data {
 		Data.getInstance().login("10.109.162.113", "8306", "admAirdBD", "1234");
 //		Data.getInstance().close();
 		System.out.println(Data.getInstance().selectQuery("SELECT aId, aName, aPrice FROM AirdBD.Apartment"));
+		System.out.println(Data.getInstance().executeQuery("sanoterusantoeurasnto"));
 //		System.out.println(Data.getInstance().selectQuery("SELECT * FROM DBer.Driver")[1]);
 //		Data.getInstance().executeQuery("INSERT INTO DBer.Driver (dId, dName) VALUES (5, 'Caca')");
 //		Data.getInstance().executeQuery("DELETE FROM DBer.Driver WHERE dID = 1");

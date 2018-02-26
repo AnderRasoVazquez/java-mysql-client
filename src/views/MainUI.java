@@ -183,7 +183,7 @@ public class MainUI {
 		if (result[0].equals("0")) {
 			infoTxt.setText("Affected rows: " + result[1]);
 			notifTxt.setText("Execute OK.");
-		}else if (result[1].equals("1")) {
+		}else if (result[0].equals("1")) {
 			infoTxt.setText("ERROR");
 			notifTxt.setText(result[1]);
 		}
