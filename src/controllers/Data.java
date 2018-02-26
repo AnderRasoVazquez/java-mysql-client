@@ -7,7 +7,11 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+/**
+ * MySQL connection manager.
+ * @author ander
+ *
+ */
 public class Data {
 	
 	private static Data instance = null;
@@ -18,6 +22,14 @@ public class Data {
 	
 	private Data() { }
 	
+	/**
+	 * Create a conexion with MySQL.
+	 * @param server
+	 * @param port
+	 * @param user
+	 * @param pass
+	 * @return
+	 */
 	public boolean login(String server, String port, String user, String pass) {
 		this.logout();
 		try {
@@ -30,9 +42,7 @@ public class Data {
 		try {
 			conn = DriverManager.getConnection(
 					"jdbc:mysql://" + server + ":" + port,
-					// TODO preguntarle que usuario tenemos que usar
 					user, pass);
-//					"admAirdBD", "1234");
 			conn.setAutoCommit(true);
 			return true;
 		} catch (SQLException e) {
@@ -43,6 +53,10 @@ public class Data {
 		
 	}
 	
+	/**
+	 * Close the connection with MySQL.
+	 * @return true if not error, false otherwise.
+	 */
     public boolean logout() {
         try {
             if (conn != null) {
@@ -55,6 +69,10 @@ public class Data {
         }
     }
     
+    /**
+     * Get the instance of the MySQL connection manager.
+     * @return the instance
+     */
 	public static Data getInstance() {
 		if (Data.instance == null) {
 			Data.instance = new Data();
@@ -62,6 +80,13 @@ public class Data {
 		return Data.instance;
 	}
 	
+	/**
+	 * Executes a SELECT query.
+	 * @param query
+	 * @return String array
+	 * 		   Index[0] -> "1" if error, "0" otherwise
+	 *         Index[1] -> Query result or error.
+	 */
 	public String[] selectQuery(String query) {
 		
 		try {
@@ -100,6 +125,11 @@ public class Data {
 		}
 	}
 	
+	/**
+	 * Execute a not SELECT query.
+	 * @param query
+	 * @return
+	 */
 	public String[] executeQuery(String query) {
 		
 		try {
@@ -108,7 +138,7 @@ public class Data {
 			e.printStackTrace();
 		}
 		
-		// Si no se ha hecho login
+		// if not logged
 		if (conn == null) {
 			System.out.println("No connection stablished.");
 		}
@@ -117,35 +147,10 @@ public class Data {
 		try {
 			st = conn.createStatement();
 			int rows = st.executeUpdate(query);
-			System.out.println("lololo funciona");
 			return new String[]{"0", "" + rows};
 		} catch (SQLException e) {
-			System.out.println("errrrrroooooorrrrrr");
 			return new String[] {"1", e.getMessage()};
 		}
-	}
-
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// Pruebas
-		Data.getInstance().login("10.109.162.113", "8306", "admAirdBD", "1234");
-//		Data.getInstance().close();
-		System.out.println(Data.getInstance().selectQuery("SELECT aId, aName, aPrice FROM AirdBD.Apartment"));
-		System.out.println(Data.getInstance().executeQuery("sanoterusantoeurasnto"));
-//		System.out.println(Data.getInstance().selectQuery("SELECT * FROM DBer.Driver")[1]);
-//		Data.getInstance().executeQuery("INSERT INTO DBer.Driver (dId, dName) VALUES (5, 'Caca')");
-//		Data.getInstance().executeQuery("DELETE FROM DBer.Driver WHERE dID = 1");
-//		Data.getInstance().executeQuery("UPDATE DBer.Driver SET dName = 'Patata' WHERE dId = 5");
-//		System.out.println(Data.getInstance().selectQuery("SELECT * FROM DBer.Driver")[1]);
-		
-		System.out.println("MySQL is not funny holy hell!!!");
-
-		Data.getInstance().logout();;
-		Data.getInstance().login("192.168.0.156", "8306", "admAirdBD", "1234");
-//		System.out.println(Data.getInstance().selectQuery("SELECT aId, aName, aPrice FROM AirdBD.Apartment"));
 	}
 
 }

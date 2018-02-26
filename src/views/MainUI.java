@@ -14,6 +14,11 @@ import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Main window of the application.
+ * @author ander
+ *
+ */
 public class MainUI {
 
 	private JFrame frame;
@@ -57,7 +62,6 @@ public class MainUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-//		frame.setBounds(100, 100, 450, 300);
 		frame.setBounds(100, 100, 460, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -141,6 +145,9 @@ public class MainUI {
 		});
 	}
 	
+	/**
+	 * Open login window.
+	 */
 	private void login() {
 		String server = txtServer.getText(); 
 		String port = txtPort.getText();
@@ -149,13 +156,11 @@ public class MainUI {
 			frame.setEnabled(false);
 		}
 		frame.setEnabled(true);
-//		if (logged) {
-//			notifTxt.setText("Success: connection stablished.");
-//		} else {
-//			notifTxt.setText("Error on login.");
-//		}
 	}
 	
+	/**
+	 * Close the connection.
+	 */
 	private void logout() {
 		boolean loggedOut = Data.getInstance().logout();
 		if (loggedOut) {
@@ -165,6 +170,9 @@ public class MainUI {
 		}
 	}
 
+	/**
+	 * Execute a select query.
+	 */
 	private void doSelectQuery() {
 		String query = sqlTxt.getText();
 		String[] result = Data.getInstance().selectQuery(query);
@@ -177,6 +185,9 @@ public class MainUI {
 		}
 	}
 	
+	/**
+	 * Execute any query that is not a select.
+	 */
 	private void doExecuteQuery() {
 		String query = sqlTxt.getText();
 		String[] result = Data.getInstance().executeQuery(query);

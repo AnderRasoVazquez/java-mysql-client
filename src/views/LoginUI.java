@@ -17,6 +17,11 @@ import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Login window, used to connect to the database.
+ * @author ander
+ *
+ */
 public class LoginUI extends JDialog {
 
 	private String server;
@@ -89,6 +94,10 @@ public class LoginUI extends JDialog {
 		setVisible(true);
 	}
 	
+	/**
+	 * Login to MySQL.
+	 * @return
+	 */
 	private boolean login() {
 		String username = txtUser.getText();
 		String password = passwordField.getText();
